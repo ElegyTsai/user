@@ -13,8 +13,8 @@ public interface LoginMapper {
     @Select("SELECT * FROM login")
     List<Login> queryAll();
 
-    @Select("SELECT id FROM login")
-    List<String> queryId();
+    @Select("SELECT * FROM login WHERE telephone = #{telephone}")
+    Login queryByTelephone(@Param("telephone") String telephone);
 
     @Insert({"INSERT INTO login(id,telephone,username,password) " +
             "VALUES(replace(uuid(), '-', ''),#{telephone},#{username},#{password})"})
@@ -24,9 +24,13 @@ public interface LoginMapper {
     int delById(String id);
 
     @Delete("DELETE FROM login WHERE telephone = #{telephone}")
-    int delByTelephone(String teplephone);
+    int delByTelephone(String telephone);
 
-    @Update("UPDATE user SET telephone=#{telephone},username=#{username},password=#{password} " +
+    @Update("UPDATE login SET telephone=#{telephone},username=#{username},password=#{password} " +
             "WHERE id = #{id}")
     int updateById(Login login);
+
+    @Update("UPDATE login SET username=#{username},password=#{password} " +
+            "WHERE telephone = #{telephone}")
+    int updateByTelephone(Login login);
 }

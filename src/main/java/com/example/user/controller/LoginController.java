@@ -26,9 +26,9 @@ public class LoginController {
         return loginMapper.queryAll();
     }
 
-    @RequestMapping("/id")
-    List<String> queryId() {
-        return loginMapper.queryId();
+    @RequestMapping("/querybytele")
+    Login queryByTelephone(String telephone) {
+        return loginMapper.queryByTelephone(telephone);
     }
 
     @RequestMapping("/add")
@@ -41,6 +41,11 @@ public class LoginController {
         return loginMapper.updateById(login) == 1 ? "success" : "failed";
     }
 
+    @RequestMapping("/updatebytele")
+    String updateByTelephone(Login login) {
+        return loginMapper.updateByTelephone(login) == 1 ? "success" : "failed";
+    }
+
     @RequestMapping("/delbyid")
     String delById(String id) {
         return loginMapper.delById(id) == 1 ? "success" : "failed";
@@ -48,7 +53,7 @@ public class LoginController {
 
     @RequestMapping("/delbytele")
     String delByTelephone(String telephone) {
-        return loginMapper.delById(telephone) == 1 ? "success" : "failed";
+        return loginMapper.delByTelephone(telephone) == 1 ? "success" : "failed";
     }
 
 }

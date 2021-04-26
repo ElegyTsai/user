@@ -17,7 +17,8 @@ public interface LoginMapper {
     Login queryByTelephone(@Param("telephone") String telephone);
 
     @Insert({"INSERT INTO login(id,telephone,username,password) " +
-            "VALUES(replace(uuid(), '-', ''),#{telephone},#{username},#{password})"})
+            "SELECT replace(uuid(), '-', ''),#{telephone},#{username},#{password} " +
+            "WHERE NOT EXISTS (SELECT telephone FROM login WHERE telephone = #{telephone})"})
     int add(Login login);
 
     @Delete("DELETE FROM login WHERE id = #{id}")

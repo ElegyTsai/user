@@ -3,7 +3,7 @@ Spring Boot + MySQL + MyBatis
 
 ## add example
 http://localhost:8080/login/add?telephone=1&username=a&password=a  
-    can only register with telephone not used before
+(can only register with telephone not used before)
 
 ## delete example
 http://localhost:8080/login/delbytele?telephone=1

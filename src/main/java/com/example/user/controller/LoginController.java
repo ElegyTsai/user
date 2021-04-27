@@ -1,6 +1,7 @@
 package com.example.user.controller;
 
 import com.example.user.entity.Login;
+import com.example.user.entity.LoginBase;
 import com.example.user.mapper.LoginMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -17,17 +18,17 @@ public class LoginController {
     LoginMapper loginMapper;
 
     @RequestMapping("/querybyid")
-    Login queryById(String id){
+    LoginBase queryById(String id){
         return loginMapper.queryById(id);
     }
 
     @RequestMapping("/")
-    List<Login> queryAll() {
+    List<LoginBase> queryAll() {
         return loginMapper.queryAll();
     }
 
     @RequestMapping("/querybytele")
-    Login queryByTelephone(String telephone) {
+    LoginBase queryByTelephone(String telephone) {
         return loginMapper.queryByTelephone(telephone);
     }
 

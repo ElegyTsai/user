@@ -1,6 +1,7 @@
 package com.example.user.mapper;
 
 import com.example.user.entity.Login;
+import com.example.user.entity.LoginBase;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -8,13 +9,13 @@ import java.util.List;
 @Mapper
 public interface LoginMapper {
     @Select("SELECT * FROM login WHERE id = #{id}")
-    Login queryById(@Param("id") String id);
+    LoginBase queryById(@Param("id") String id);
 
     @Select("SELECT * FROM login")
-    List<Login> queryAll();
+    List<LoginBase> queryAll();
 
     @Select("SELECT * FROM login WHERE telephone = #{telephone}")
-    Login queryByTelephone(@Param("telephone") String telephone);
+    LoginBase queryByTelephone(@Param("telephone") String telephone);
 
     @Insert({"INSERT INTO login(id,telephone,username,password) " +
             "SELECT replace(uuid(), '-', ''),#{telephone},#{username},#{password} " +

@@ -7,9 +7,9 @@ import java.awt.image.BufferedImage;
 @Data
 public class PublicMaterialBase {
     private String pid;
-    private BufferedImage thumbnail;
+    private byte[] thumbnail;
 
-    public void setThumbnail(BufferedImage thumbnail) {
+    public void setThumbnail(byte[] thumbnail) {
         this.thumbnail = thumbnail;
     }
 }

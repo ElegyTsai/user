@@ -13,8 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/material/public")
@@ -30,19 +29,27 @@ public class PublicMaterialController {
         for(int i=0; i < publicMaterials.size(); i++){
             publicMaterial = publicMaterials.get(i);
             String thumbnail_url = publicMaterial.getThumbnail_url();
-            publicMaterial.setThumbnail(ImageIO.read(new FileInputStream(new File(thumbnail_url))));
+            File file = new File(thumbnail_url);
+            FileInputStream inputStream = new FileInputStream(file);
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes, 0, inputStream.available());
+            publicMaterial.setThumbnail(bytes);
         }
-        List<PublicMaterialBase> publicMaterialBases = new ArrayList<PublicMaterialBase>();
+        List<PublicMaterialBase> publicMaterialBases = new ArrayList<>();
         publicMaterialBases.addAll(publicMaterials);
         return publicMaterialBases;
     }
 
     @RequestMapping(value="/querybypid", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
     @ResponseBody
-    BufferedImage queryByPid(String pid) throws IOException {
+    byte[] queryByPid(String pid) throws IOException {
         PublicMaterial publicMaterial = publicMaterialMapper.queryByPid(pid);
         String picture_url = publicMaterial.getPicture_url();
-        return ImageIO.read(new FileInputStream(new File(picture_url)));
+        File file = new File(picture_url);
+        FileInputStream inputStream = new FileInputStream(file);
+        byte[] bytes = new byte[inputStream.available()];
+        inputStream.read(bytes, 0, inputStream.available());
+        return bytes;
     }
 
     @RequestMapping("/add")

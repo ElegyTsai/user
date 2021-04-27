@@ -1,6 +1,5 @@
 package com.example.user.controller;
 
-import com.example.user.entity.Login;
 import com.example.user.entity.PublicMaterial;
 import com.example.user.entity.PublicMaterialBase;
 import com.example.user.mapper.PublicMaterialMapper;
@@ -39,6 +38,7 @@ public class PublicMaterialController {
     }
 
     @RequestMapping(value="/querybypid", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
+    @ResponseBody
     BufferedImage queryByPid(String pid) throws IOException {
         PublicMaterial publicMaterial = publicMaterialMapper.queryByPid(pid);
         String picture_url = publicMaterial.getPicture_url();

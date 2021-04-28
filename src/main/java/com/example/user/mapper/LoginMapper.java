@@ -1,7 +1,7 @@
 package com.example.user.mapper;
 
-import com.example.user.entity.Login;
-import com.example.user.entity.LoginBase;
+import com.example.user.model.Login;
+import com.example.user.model.LoginBase;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

@@ -1,8 +1,6 @@
-package com.example.user.entity;
+package com.example.user.model;
 
 import lombok.Data;
-
-import java.awt.image.BufferedImage;
 
 @Data
 public class PublicMaterialBase {

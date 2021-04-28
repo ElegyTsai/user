@@ -1,9 +1,6 @@
 package com.example.user.mapper;
 
-import com.example.user.entity.Login;
-import com.example.user.entity.LoginBase;
-import com.example.user.entity.PublicMaterial;
-import com.example.user.entity.PublicMaterialBase;
+import com.example.user.model.PublicMaterial;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

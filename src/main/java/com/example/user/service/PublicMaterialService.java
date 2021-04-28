@@ -20,18 +20,23 @@ public class PublicMaterialService {
     public List<PublicMaterialBase> queryByCate(String category) throws IOException {
         List<PublicMaterial> publicMaterials = publicMaterialMapper.queryByCate(category);
         PublicMaterial publicMaterial;
-        
+        List<PublicMaterialBase> publicMaterialBases = new ArrayList<>();
+
         for(int i=0; i < publicMaterials.size(); i++){
+            PublicMaterialBase publicMaterialBase = new PublicMaterialBase();
             publicMaterial = publicMaterials.get(i);
+            String pid = publicMaterial.getPid();
+            publicMaterialBase.setPid(pid);
+
             String thumbnail_url = publicMaterial.getThumbnail_url();
             File file = new File(thumbnail_url);
             FileInputStream inputStream = new FileInputStream(file);
             byte[] bytes = new byte[inputStream.available()];
             inputStream.read(bytes, 0, inputStream.available());
-            publicMaterial.setThumbnail(bytes);
+            publicMaterialBase.setThumbnail(bytes);
+
+            publicMaterialBases.add(publicMaterialBase);
         }
-        List<PublicMaterialBase> publicMaterialBases = new ArrayList<>();
-        publicMaterialBases.addAll(publicMaterials);
         return publicMaterialBases;
     }
 

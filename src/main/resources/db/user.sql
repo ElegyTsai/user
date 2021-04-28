@@ -11,7 +11,7 @@
  Target Server Version : 50733
  File Encoding         : 65001
 
- Date: 28/04/2021 09:43:29
+ Date: 28/04/2021 10:46:49
 */
 
 SET NAMES utf8mb4;
@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table structure for login
 -- ----------------------------
-/*DROP TABLE IF EXISTS `login`;*/
+DROP TABLE IF EXISTS `login`;
 CREATE TABLE `login`  (
   `id` varchar(100) CHARACTER SET utf8 COLLATE utf8_estonian_ci NOT NULL COMMENT '唯一不重复',
   `telephone` varchar(20) CHARACTER SET utf8 COLLATE utf8_estonian_ci NOT NULL COMMENT '电话号码',
@@ -32,13 +32,13 @@ CREATE TABLE `login`  (
 -- ----------------------------
 -- Table structure for public_material
 -- ----------------------------
-/*DROP TABLE IF EXISTS `public_material`;*/
+DROP TABLE IF EXISTS `public_material`;
 CREATE TABLE `public_material`  (
   `pid` varchar(100) CHARACTER SET utf8 COLLATE utf8_estonian_ci NOT NULL COMMENT '唯一不重复',
   `thumbnail_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_estonian_ci NULL DEFAULT NULL COMMENT '缩略图地址',
   `picture_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_estonian_ci NOT NULL COMMENT '图片地址',
   `category` varchar(20) CHARACTER SET utf8 COLLATE utf8_estonian_ci NULL DEFAULT NULL COMMENT '类别',
   PRIMARY KEY (`pid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_estonian_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

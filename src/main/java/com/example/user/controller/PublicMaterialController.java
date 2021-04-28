@@ -3,16 +3,16 @@ package com.example.user.controller;
 import com.example.user.model.PublicMaterial;
 import com.example.user.model.PublicMaterialBase;
 import com.example.user.service.PublicMaterialService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
-import java.io.FileInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.List;
 
 @RestController
@@ -22,15 +22,28 @@ public class PublicMaterialController {
         PublicMaterialService publicMaterialService;
 
         @RequestMapping(value="/querybycate", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
-        @ResponseBody
-        List<PublicMaterialBase> queryByCate(String category) throws IOException {
-            return publicMaterialService.queryByCate(category);
+         void queryByCate(String category, HttpServletRequest request, HttpServletResponse response)
+                throws IOException {
+            List<PublicMaterialBase> publicMaterialBases = publicMaterialService.queryByCate(category);
+            String json = "";
+            ObjectMapper objectMapper = new ObjectMapper ();
+            json = objectMapper.writeValueAsString (publicMaterialBases); //java对象转换为json数据
+            PrintWriter writer = response.getWriter ();
+            writer.print (json);
+            writer.flush ();
+            writer.close ();
         }
 
         @RequestMapping(value="/querybypid", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
-        @ResponseBody
-        byte[] queryByPid(String pid) throws IOException {
-            return publicMaterialService.queryByPid(pid);
+        void queryByPid(String pid, HttpServletRequest request, HttpServletResponse response) throws IOException {
+            byte[] picture = publicMaterialService.queryByPid(pid);
+            String json = "";
+            ObjectMapper objectMapper = new ObjectMapper ();
+            json = objectMapper.writeValueAsString (picture); //java对象转换为json数据
+            PrintWriter writer = response.getWriter ();
+            writer.print (json);
+            writer.flush ();
+            writer.close ();
         }
 
         @RequestMapping("/add")

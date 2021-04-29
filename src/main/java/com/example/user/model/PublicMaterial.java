@@ -15,4 +15,16 @@ public class PublicMaterial extends PublicMaterialBase{
     public String getPicture_url() {
         return picture_url;
     }
+
+    public void setThumbnail_url(String thumbnail_url) {
+        this.thumbnail_url = thumbnail_url;
+    }
+
+    public void setPicture_url(String picture_url) {
+        this.picture_url = picture_url;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

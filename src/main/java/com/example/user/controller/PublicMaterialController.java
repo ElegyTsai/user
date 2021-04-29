@@ -1,6 +1,5 @@
 package com.example.user.controller;
 
-import com.example.user.model.PublicMaterial;
 import com.example.user.model.PublicMaterialBase;
 import com.example.user.service.PublicMaterialService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,8 +47,18 @@ public class PublicMaterialController {
         }
 
         @RequestMapping("/add")
-        String add(PublicMaterial publicMaterial) {
-            return publicMaterialService.add(publicMaterial) == 1 ? "success" : "failed";
+        String add(MultipartFile file, String category) throws IOException {
+            String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+            if (file == null) {
+                return "请选择要上传的图片";
+            }
+            if (category == null){
+                return "请选择图片类别";
+            }
+            if (!"jpg,png".toUpperCase().contains(suffix.toUpperCase())) {
+                return "请选择jpg,png格式的图片";
+            }
+            return publicMaterialService.add(file, category) == 1 ? "success" : "failed";
         }
 
         @RequestMapping("/delbypid")

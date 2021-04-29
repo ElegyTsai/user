@@ -14,7 +14,7 @@ public interface PublicMaterialMapper {
     PublicMaterial queryByPid(@Param("pid") String pid);
 
     @Insert({"INSERT INTO public_material(pid,thumbnail_url,picture_url,category) " +
-            "VALUES (replace(uuid(), '-', ''),#{thumbnail_url},#{picture_url},#{category})"})
+            "VALUES (#{pid},#{thumbnail_url},#{picture_url},#{category})"})
     int add(PublicMaterial publicMaterial);
 
     @Delete("DELETE FROM public_material WHERE pid = #{pid}")

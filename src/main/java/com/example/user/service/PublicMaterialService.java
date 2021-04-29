@@ -4,7 +4,9 @@ import com.example.user.model.PublicMaterial;
 import com.example.user.model.PublicMaterialBase;
 import com.example.user.mapper.PublicMaterialMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +17,9 @@ import java.util.*;
 public class PublicMaterialService {
     @Autowired
     PublicMaterialMapper publicMaterialMapper;
+
+    @Value("${prop.upload-folder}")
+    private String UPLOAD_FOLDER;
 
     public List<PublicMaterialBase> queryByCate(String category) throws IOException {
         List<PublicMaterial> publicMaterials = publicMaterialMapper.queryByCate(category);
@@ -49,7 +54,36 @@ public class PublicMaterialService {
         return bytes;
     }
 
-    public int add(PublicMaterial publicMaterial) {
+    public int add(MultipartFile file, String category) throws IOException {
+        PublicMaterial publicMaterial = new PublicMaterial();
+        publicMaterial.setCategory(category);
+        String pid = UUID.randomUUID().toString().replaceAll("-","");
+        publicMaterial.setPid(pid);
+
+        String savePath = UPLOAD_FOLDER;
+        String pictureSavePath = savePath + "picture/" + category + "/";
+        String thumbnailSavePath = savePath + "thumbnail/" + category + "/";
+        File pictureSavePathFile = new File(pictureSavePath);
+        File thumbnailSavePathFile = new File(thumbnailSavePath);
+        if (!pictureSavePathFile.exists()) {
+            pictureSavePathFile.mkdir();
+        }
+        if (!thumbnailSavePathFile.exists()) {
+            thumbnailSavePathFile.mkdir();
+        }
+        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+        String filename = pid + "." + suffix;
+        String picturePathname = pictureSavePath+ filename;
+        String thumbnailPathname = thumbnailSavePath + filename;
+        publicMaterial.setPicture_url(picturePathname);
+        publicMaterial.setThumbnail_url(thumbnailPathname);
+        try {
+            file.transferTo(new File(picturePathname));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         return publicMaterialMapper.add(publicMaterial);
     }
 

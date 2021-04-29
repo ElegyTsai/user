@@ -48,7 +48,9 @@ public class PublicMaterialController {
 
         @RequestMapping("/add")
         String add(MultipartFile file, String category) throws IOException {
+            //检查图片后缀
             String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+            //检查MD5值
             String md5 = org.springframework.util.DigestUtils.md5DigestAsHex(file.getInputStream());
             if (file == null) {
                 return "no picture";

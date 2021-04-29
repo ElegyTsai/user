@@ -22,6 +22,7 @@ public class PublicMaterialService {
     @Autowired
     PublicMaterialMapper publicMaterialMapper;
 
+    //获取上传文件夹名称
     @Value("${prop.upload-folder}")
     private String UPLOAD_FOLDER;
 
@@ -30,12 +31,14 @@ public class PublicMaterialService {
         PublicMaterial publicMaterial;
         List<PublicMaterialBase> publicMaterialBases = new ArrayList<>();
 
+        //得到PuMaterialBase的List
         for(int i=0; i < publicMaterials.size(); i++){
             PublicMaterialBase publicMaterialBase = new PublicMaterialBase();
             publicMaterial = publicMaterials.get(i);
             String pid = publicMaterial.getPid();
             publicMaterialBase.setPid(pid);
 
+            //读取缩略图
             String thumbnail_url = publicMaterial.getThumbnail_url();
             File file = new File(thumbnail_url);
             FileInputStream inputStream = new FileInputStream(file);
@@ -48,6 +51,7 @@ public class PublicMaterialService {
         return publicMaterialBases;
     }
 
+    //读取图片
     public byte[] queryByPid(String pid) throws IOException {
         PublicMaterial publicMaterial = publicMaterialMapper.queryByPid(pid);
         String picture_url = publicMaterial.getPicture_url();
@@ -64,6 +68,7 @@ public class PublicMaterialService {
         String md5 = org.springframework.util.DigestUtils.md5DigestAsHex(file.getInputStream());
         publicMaterial.setMd5(md5);
 
+        //设置图片和缩略图的保存位置
         String savePath = UPLOAD_FOLDER;
         String pictureSavePath = savePath + "picture/" + category + "/";
         String thumbnailSavePath = savePath + "thumbnail/" + category + "/";
@@ -75,13 +80,18 @@ public class PublicMaterialService {
         if (!thumbnailSavePathFile.exists()) {
             thumbnailSavePathFile.mkdirs();
         }
+
+        //用MD5值重命名图片
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
         String filename = md5 + "." + suffix;
+
+        //设置图片和缩略图的url
         String picturePathname = pictureSavePath + filename;
         String thumbnailPathname = thumbnailSavePath + filename;
         publicMaterial.setPicture_url(picturePathname);
         publicMaterial.setThumbnail_url(thumbnailPathname);
 
+        //保存图片到本地
         try {
             file.transferTo(new File(picturePathname));
         } catch (IOException e) {
@@ -90,9 +100,10 @@ public class PublicMaterialService {
             e.printStackTrace();
         }
 
+        //保存缩略图到本地
         BufferedImage thumbnail = Thumbnails.of(picturePathname)
                                             .size(20, 20)
-                                            .asBufferedImage();
+                                            .asBufferedImage();//按比例缩小
         try {
             ImageIO.write(thumbnail, suffix, new File(thumbnailPathname));
         } catch (IOException e) {

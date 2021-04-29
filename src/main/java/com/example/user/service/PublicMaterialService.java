@@ -66,10 +66,10 @@ public class PublicMaterialService {
         File pictureSavePathFile = new File(pictureSavePath);
         File thumbnailSavePathFile = new File(thumbnailSavePath);
         if (!pictureSavePathFile.exists()) {
-            pictureSavePathFile.mkdir();
+            pictureSavePathFile.mkdirs();
         }
         if (!thumbnailSavePathFile.exists()) {
-            thumbnailSavePathFile.mkdir();
+            thumbnailSavePathFile.mkdirs();
         }
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
         String filename = pid + "." + suffix;

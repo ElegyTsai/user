@@ -11,7 +11,7 @@
  Target Server Version : 50733
  File Encoding         : 65001
 
- Date: 29/04/2021 13:35:54
+ Date: 29/04/2021 15:20:56
 */
 
 SET NAMES utf8mb4;
@@ -38,6 +38,7 @@ CREATE TABLE `public_material`  (
   `thumbnail_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_estonian_ci NULL DEFAULT NULL COMMENT '缩略图地址',
   `picture_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_estonian_ci NOT NULL COMMENT '图片地址',
   `category` varchar(20) CHARACTER SET utf8 COLLATE utf8_estonian_ci NULL DEFAULT NULL COMMENT '类别',
+  `md5` varchar(255) CHARACTER SET utf8 COLLATE utf8_estonian_ci NULL DEFAULT NULL,
   PRIMARY KEY (`pid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_estonian_ci ROW_FORMAT = Dynamic;
 

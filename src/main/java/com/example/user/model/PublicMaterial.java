@@ -7,6 +7,7 @@ public class PublicMaterial extends PublicMaterialBase{
     private String thumbnail_url;
     private String picture_url;
     private String category;
+    private String md5;
 
     public String getThumbnail_url() {
         return thumbnail_url;
@@ -26,5 +27,9 @@ public class PublicMaterial extends PublicMaterialBase{
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
     }
 }

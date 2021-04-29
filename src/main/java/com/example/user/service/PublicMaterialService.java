@@ -3,6 +3,7 @@ package com.example.user.service;
 import com.example.user.model.PublicMaterial;
 import com.example.user.model.PublicMaterialBase;
 import com.example.user.mapper.PublicMaterialMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -60,8 +61,8 @@ public class PublicMaterialService {
     public int add(MultipartFile file, String category) throws IOException {
         PublicMaterial publicMaterial = new PublicMaterial();
         publicMaterial.setCategory(category);
-        String pid = UUID.randomUUID().toString().replaceAll("-","");
-        publicMaterial.setPid(pid);
+        String md5 = org.springframework.util.DigestUtils.md5DigestAsHex(file.getInputStream());
+        publicMaterial.setMd5(md5);
 
         String savePath = UPLOAD_FOLDER;
         String pictureSavePath = savePath + "picture/" + category + "/";
@@ -75,7 +76,7 @@ public class PublicMaterialService {
             thumbnailSavePathFile.mkdirs();
         }
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
-        String filename = pid + "." + suffix;
+        String filename = md5 + "." + suffix;
         String picturePathname = pictureSavePath + filename;
         String thumbnailPathname = thumbnailSavePath + filename;
         publicMaterial.setPicture_url(picturePathname);
@@ -105,6 +106,10 @@ public class PublicMaterialService {
 
     public int delByPid(String pid) {
         return publicMaterialMapper.delByPid(pid);
+    }
+
+    public PublicMaterial queryByMD5(@Param("md5") String md5){
+        return publicMaterialMapper.queryByMD5(md5);
     }
 
 }

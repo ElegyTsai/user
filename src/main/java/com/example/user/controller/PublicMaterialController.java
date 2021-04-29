@@ -49,14 +49,18 @@ public class PublicMaterialController {
         @RequestMapping("/add")
         String add(MultipartFile file, String category) throws IOException {
             String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+            String md5 = org.springframework.util.DigestUtils.md5DigestAsHex(file.getInputStream());
             if (file == null) {
-                return "请选择要上传的图片";
+                return "no picture";
             }
             if (category == null){
-                return "请选择图片类别";
+                return "category not chosen";
             }
             if (!"jpg,png".toUpperCase().contains(suffix.toUpperCase())) {
-                return "请选择jpg,png格式的图片";
+                return "not a picture like '.jpg' or '.png'";
+            }
+            if (publicMaterialService.queryByMD5(md5) != null){
+                return "picture already exist";
             }
             return publicMaterialService.add(file, category) == 1 ? "success" : "failed";
         }

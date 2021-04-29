@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import net.coobird.thumbnailator.Thumbnails;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -73,10 +76,11 @@ public class PublicMaterialService {
         }
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
         String filename = pid + "." + suffix;
-        String picturePathname = pictureSavePath+ filename;
+        String picturePathname = pictureSavePath + filename;
         String thumbnailPathname = thumbnailSavePath + filename;
         publicMaterial.setPicture_url(picturePathname);
         publicMaterial.setThumbnail_url(thumbnailPathname);
+
         try {
             file.transferTo(new File(picturePathname));
         } catch (IOException e) {
@@ -84,6 +88,18 @@ public class PublicMaterialService {
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+
+        BufferedImage thumbnail = Thumbnails.of(picturePathname)
+                                            .size(20, 20)
+                                            .asBufferedImage();
+        try {
+            ImageIO.write(thumbnail, suffix, new File(thumbnailPathname));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         return publicMaterialMapper.add(publicMaterial);
     }
 

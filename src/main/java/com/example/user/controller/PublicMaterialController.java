@@ -21,8 +21,8 @@ public class PublicMaterialController {
         @Autowired
         PublicMaterialService publicMaterialService;
 
-        @RequestMapping(value="/querybycate", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
-         void queryByCate(String category, HttpServletRequest request, HttpServletResponse response)
+        @RequestMapping(value="/querybycate")
+         void queryByCate(String category, HttpServletResponse response)
                 throws IOException {
             List<PublicMaterialBase> publicMaterialBases = publicMaterialService.queryByCate(category);
             String json = "";

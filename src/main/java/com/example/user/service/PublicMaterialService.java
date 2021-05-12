@@ -44,6 +44,7 @@ public class PublicMaterialService {
             FileInputStream inputStream = new FileInputStream(file);
             byte[] bytes = new byte[inputStream.available()];
             inputStream.read(bytes, 0, inputStream.available());
+            inputStream.close();
             publicMaterialBase.setThumbnail(bytes);
 
             publicMaterialBases.add(publicMaterialBase);
@@ -59,6 +60,7 @@ public class PublicMaterialService {
         FileInputStream inputStream = new FileInputStream(file);
         byte[] bytes = new byte[inputStream.available()];
         inputStream.read(bytes, 0, inputStream.available());
+        inputStream.close();
         return bytes;
     }
 
@@ -116,6 +118,13 @@ public class PublicMaterialService {
     }
 
     public int delByPid(String pid) {
+        PublicMaterial publicMaterial = publicMaterialMapper.queryByPid(pid);
+        String thumbnail_url = publicMaterial.getThumbnail_url();
+        String picture_url = publicMaterial.getPicture_url();
+        File f1 = new File(thumbnail_url);
+        f1.delete();
+        File f2 = new File(picture_url);
+        f2.delete();
         return publicMaterialMapper.delByPid(pid);
     }
 

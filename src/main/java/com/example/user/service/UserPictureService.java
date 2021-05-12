@@ -23,12 +23,34 @@ public class UserPictureService {
     @Value("${prop.upload-folder}")
     private String UPLOAD_FOLDER;
 
+    public void saveFile(JSONObject file, String filePathname) throws IOException {
+        FileWriter fileWriter = new FileWriter(filePathname);
+        fileWriter.write(file.toJSONString());
+        fileWriter.flush();
+        fileWriter.close();
+    }
+
+    public void saveThumbnail(byte[] thumbnail, String thumbnailPathname) throws IOException {
+        File f= new File(thumbnailPathname);
+        FileOutputStream fileoutputStream = new FileOutputStream(f);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream((fileoutputStream));
+        bufferedOutputStream.write(thumbnail);
+        bufferedOutputStream.close();
+        fileoutputStream.close();
+    }
+
+    public void delete(String thumbnail_url, String file_url){
+        File f1 = new File(thumbnail_url);
+        f1.delete();
+        File f2 = new File(file_url);
+        f2.delete();
+    }
+
     public List<UserPictureBase> queryById(String id) throws IOException {
         List<UserPicture> userPictures = userPictureMapper.queryById(id);
         UserPicture userPicture;
         List<UserPictureBase> userPictureBases = new ArrayList<>();
 
-        //得到PuMaterialBase的List
         for(int i=0; i < userPictures.size(); i++){
             UserPictureBase userPictureBase = new UserPictureBase();
             userPicture = userPictures.get(i);
@@ -84,45 +106,24 @@ public class UserPictureService {
         if(pid!=""){
             String thumbnailPathname = thumbnailSavePath + pid + ".png";
             String filePathname = fileSavePath + pid;
-            File f1 = new File(thumbnailPathname);
-            f1.delete();
-            File f2 = new File(filePathname);
-            f2.delete();
-
-            FileWriter fileWriter = new FileWriter(filePathname);
-            fileWriter.write(file.toJSONString());
-            fileWriter.flush();
-            fileWriter.close();
-
-            File f= new File(thumbnailPathname);
-            FileOutputStream fileoutputStream = new FileOutputStream(f);
-            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream((fileoutputStream));
-            bufferedOutputStream.write(thumbnail);
-            bufferedOutputStream.close();
-            fileoutputStream.close();
+            delete(thumbnailPathname, filePathname);
+            saveFile(file, filePathname);
+            saveThumbnail(thumbnail, thumbnailPathname);
             return 1;
         }
         else{
-            UserPicture userPicture = new UserPicture();
             pid = UUID.randomUUID().toString().replace("-","");
             String thumbnailPathname = thumbnailSavePath + pid + ".png";
             String filePathname = fileSavePath + pid;
+
+            UserPicture userPicture = new UserPicture();
             userPicture.setFile_url(filePathname);
             userPicture.setThumbnail_url(thumbnailPathname);
             userPicture.setPid(pid);
             userPicture.setId(id);
 
-            FileWriter fileWriter = new FileWriter(filePathname);
-            fileWriter.write(file.toJSONString());
-            fileWriter.flush();
-            fileWriter.close();
-
-            File f= new File(thumbnailPathname);
-            FileOutputStream fileoutputStream = new FileOutputStream(f);
-            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream((fileoutputStream));
-            bufferedOutputStream.write(thumbnail);
-            bufferedOutputStream.close();
-            fileoutputStream.close();
+            saveFile(file, filePathname);
+            saveThumbnail(thumbnail, thumbnailPathname);
             return userPictureMapper.add(userPicture);
         }
     }
@@ -131,10 +132,7 @@ public class UserPictureService {
         UserPicture userPicture = userPictureMapper.querybypid(pid);
         String thumbnail_url = userPicture.getThumbnail_url();
         String file_url = userPicture.getFile_url();
-        File f1 = new File(thumbnail_url);
-        f1.delete();
-        File f2 = new File(file_url);
-        f2.delete();
+        delete(thumbnail_url, file_url);
         return userPictureMapper.delByPid(pid);
     }
 }

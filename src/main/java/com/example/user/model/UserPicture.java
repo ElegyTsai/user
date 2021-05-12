@@ -1,7 +1,9 @@
 package com.example.user.model;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.Data;
 
+@Data
 public class UserPicture extends UserPictureBase{
     private String thumbnail_url;
     private String file_url;

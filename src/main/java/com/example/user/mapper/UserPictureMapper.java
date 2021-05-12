@@ -14,7 +14,7 @@ public interface UserPictureMapper {
     List<UserPicture> queryById(@Param("id") String id);
 
     @Insert({"INSERT INTO user_picture(pid,id,thumbnail_url,file_url) " +
-            "VALUES (replace(uuid(), '-', ''),#{id},#{thumbnail_url},#{file_url})"})
+            "VALUES (#{pid},#{id},#{thumbnail_url},#{file_url})"})
     int add(UserPicture userPicture);
 
     @Delete("DELETE FROM user_picture WHERE pid = #{pid}")

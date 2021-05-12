@@ -2,6 +2,8 @@ package com.example.user.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.user.mapper.UserPictureMapper;
+import com.example.user.model.PublicMaterial;
+import com.example.user.model.PublicMaterialBase;
 import com.example.user.model.UserPicture;
 import com.example.user.model.UserPictureBase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +25,23 @@ public class UserPictureService {
 
     public List<UserPictureBase> queryById(String id) throws IOException {
         List<UserPicture> userPictures = userPictureMapper.queryById(id);
-        List<UserPictureBase> userPictureBases = new ArrayList<>();
         UserPicture userPicture;
+        List<UserPictureBase> userPictureBases = new ArrayList<>();
 
-        for(int i=0; i<userPictures.size(); i++){
+        //得到PuMaterialBase的List
+        for(int i=0; i < userPictures.size(); i++){
             UserPictureBase userPictureBase = new UserPictureBase();
             userPicture = userPictures.get(i);
             String pid = userPicture.getPid();
             userPictureBase.setPid(pid);
 
+            //读取缩略图
             String thumbnail_url = userPicture.getThumbnail_url();
             File file = new File(thumbnail_url);
             FileInputStream inputStream = new FileInputStream(file);
             byte[] bytes = new byte[inputStream.available()];
             inputStream.read(bytes, 0, inputStream.available());
+            inputStream.close();
             userPictureBase.setThumbnail(bytes);
 
             userPictureBases.add(userPictureBase);
@@ -44,11 +49,23 @@ public class UserPictureService {
         return userPictureBases;
     }
 
-//    public JSONObject queryByPid(String pid){
-//        UserPicture userPicture = userPictureMapper.querybypid(pid);
-//        String file_url = userPicture.getFile_url();
-//        File file = new File(file_url);
-//    }
+    public String queryByPid(String pid) throws IOException {
+        UserPicture userPicture = userPictureMapper.querybypid(pid);
+        String file_url = userPicture.getFile_url();
+        String line="";
+        File file = new File(file_url);
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        while(line != null){
+            line = bufferedReader.readLine();
+            if(line == null){
+                break;
+            }
+            stringBuilder.append(line.trim());
+        }
+        bufferedReader.close();
+        return stringBuilder.toString();
+    }
 
     public int save(JSONObject file, byte[] thumbnail, String id, String pid) throws IOException {
         String savePath = UPLOAD_FOLDER;
@@ -65,7 +82,7 @@ public class UserPictureService {
         }
 
         if(pid!=""){
-            String thumbnailPathname = thumbnailSavePath + pid;
+            String thumbnailPathname = thumbnailSavePath + pid + ".png";
             String filePathname = fileSavePath + pid;
             File f1 = new File(thumbnailPathname);
             f1.delete();
@@ -74,28 +91,50 @@ public class UserPictureService {
 
             FileWriter fileWriter = new FileWriter(filePathname);
             fileWriter.write(file.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
 
             File f= new File(thumbnailPathname);
-            FileOutputStream outputStream = new FileOutputStream(f);
-            outputStream.write(thumbnail);
+            FileOutputStream fileoutputStream = new FileOutputStream(f);
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream((fileoutputStream));
+            bufferedOutputStream.write(thumbnail);
+            bufferedOutputStream.close();
+            fileoutputStream.close();
             return 1;
         }
         else{
             UserPicture userPicture = new UserPicture();
             pid = UUID.randomUUID().toString().replace("-","");
-            String thumbnailPathname = thumbnailSavePath + pid;
+            String thumbnailPathname = thumbnailSavePath + pid + ".png";
             String filePathname = fileSavePath + pid;
             userPicture.setFile_url(filePathname);
             userPicture.setThumbnail_url(thumbnailPathname);
             userPicture.setPid(pid);
             userPicture.setId(id);
+
             FileWriter fileWriter = new FileWriter(filePathname);
             fileWriter.write(file.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
 
             File f= new File(thumbnailPathname);
-            FileOutputStream outputStream = new FileOutputStream(f);
-            outputStream.write(thumbnail);
+            FileOutputStream fileoutputStream = new FileOutputStream(f);
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream((fileoutputStream));
+            bufferedOutputStream.write(thumbnail);
+            bufferedOutputStream.close();
+            fileoutputStream.close();
             return userPictureMapper.add(userPicture);
         }
+    }
+
+    public int delByPid(String pid){
+        UserPicture userPicture = userPictureMapper.querybypid(pid);
+        String thumbnail_url = userPicture.getThumbnail_url();
+        String file_url = userPicture.getFile_url();
+        File f1 = new File(thumbnail_url);
+        f1.delete();
+        File f2 = new File(file_url);
+        f2.delete();
+        return userPictureMapper.delByPid(pid);
     }
 }

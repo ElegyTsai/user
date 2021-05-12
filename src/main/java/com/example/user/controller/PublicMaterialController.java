@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,7 +34,7 @@ public class PublicMaterialController {
         }
 
         @RequestMapping(value="/querybypid", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
-        void queryByPid(String pid, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        void queryByPid(String pid, HttpServletResponse response) throws IOException {
             byte[] picture = publicMaterialService.queryByPid(pid);
             String json = "";
             ObjectMapper objectMapper = new ObjectMapper ();

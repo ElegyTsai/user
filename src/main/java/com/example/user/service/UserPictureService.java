@@ -2,8 +2,6 @@ package com.example.user.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.user.mapper.UserPictureMapper;
-import com.example.user.model.PublicMaterial;
-import com.example.user.model.PublicMaterialBase;
 import com.example.user.model.UserPicture;
 import com.example.user.model.UserPictureBase;
 import org.springframework.beans.factory.annotation.Autowired;

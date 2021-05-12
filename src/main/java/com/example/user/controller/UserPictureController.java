@@ -1,17 +1,14 @@
 package com.example.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.user.model.PublicMaterialBase;
 import com.example.user.model.UserPictureBase;
 import com.example.user.service.UserPictureService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;

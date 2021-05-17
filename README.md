@@ -24,7 +24,7 @@ http://localhost:8080/api/login/querybytele
 > need telephone, password
 ***
 > example    
-> http://localhost:8080/api/login/updatebytele?telephone=1&username=a
+> http://localhost:8080/api/login/querybytele?telephone=1&password=a
 
 ### update（更新）
 http://localhost:8080/api/login/updatebyid

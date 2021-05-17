@@ -31,8 +31,8 @@ public class LoginController {
     }
 
     @RequestMapping("/add")
-    public String add(Login login) {
-        return loginService.add(login) == 1 ? "success" : "failed";
+    public LoginBase add(Login login) {
+        return loginService.add(login);
     }
 
     @RequestMapping("/updatebyid")

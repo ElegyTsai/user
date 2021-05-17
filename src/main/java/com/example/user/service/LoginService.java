@@ -25,8 +25,10 @@ public class LoginService {
         return loginMapper.queryByTelephone(telephone);
     }
 
-    public int add(Login login) {
-        return loginMapper.add(login);
+    public LoginBase add(Login login) {
+        String telephone = login.getTelephone();
+        loginMapper.add(login);
+        return loginMapper.queryByTelephone(telephone);
     }
 
     public int updateById(Login login) {

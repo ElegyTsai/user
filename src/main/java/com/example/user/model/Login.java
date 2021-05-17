@@ -6,4 +6,8 @@ import lombok.Data;
 public class Login extends LoginBase{
     private String telephone;
     private String password;
+
+    public String getTelephone() {
+        return telephone;
+    }
 }

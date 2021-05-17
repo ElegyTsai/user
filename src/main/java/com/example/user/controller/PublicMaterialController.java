@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 @RestController
-@RequestMapping("/material/public")
+@RequestMapping("/api/material/public")
 public class PublicMaterialController {
         @Autowired
         PublicMaterialService publicMaterialService;

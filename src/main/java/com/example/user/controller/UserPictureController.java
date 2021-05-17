@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 @RestController
-@RequestMapping("/picture")
+@RequestMapping("/api/picture")
 public class UserPictureController {
     @Autowired
     UserPictureService userPictureService;

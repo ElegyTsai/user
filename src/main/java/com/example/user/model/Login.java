@@ -10,4 +10,8 @@ public class Login extends LoginBase{
     public String getTelephone() {
         return telephone;
     }
+
+    public String getPassword() {
+        return password;
+    }
 }

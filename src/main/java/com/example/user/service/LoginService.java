@@ -3,6 +3,7 @@ package com.example.user.service;
 import com.example.user.model.Login;
 import com.example.user.model.LoginBase;
 import com.example.user.mapper.LoginMapper;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,18 +22,21 @@ public class LoginService {
         return loginMapper.queryAll();
     }
 
-    public LoginBase queryByTelephone(String telephone) {
-        return loginMapper.queryByTelephone(telephone);
+    public LoginBase queryByTelephone(String telephone, String password) {
+        return loginMapper.queryByTelephone(telephone, password);
     }
 
     public LoginBase add(Login login) {
         String telephone = login.getTelephone();
+        String password = login.getPassword();
         loginMapper.add(login);
-        return loginMapper.queryByTelephone(telephone);
+        return loginMapper.queryByTelephone(telephone,password);
     }
 
-    public int updateById(Login login) {
-        return loginMapper.updateById(login);
+    public LoginBase updateById(Login login) {
+        String id = login.getId();
+        loginMapper.updateById(login);
+        return loginMapper.queryById(id);
     }
 
     public int updateByTelephone(Login login) {

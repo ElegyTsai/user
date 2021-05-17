@@ -6,4 +6,8 @@ import lombok.Data;
 public class LoginBase {
     private String id;
     private String username;
+
+    public String getId() {
+        return id;
+    }
 }

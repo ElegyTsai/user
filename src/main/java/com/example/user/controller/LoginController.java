@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/login")
 public class LoginController {
     @Autowired
     LoginService loginService;
@@ -26,8 +26,8 @@ public class LoginController {
     }
 
     @RequestMapping("/querybytele")
-    public LoginBase queryByTelephone(String telephone) {
-        return loginService.queryByTelephone(telephone);
+    public LoginBase queryByTelephone(String telephone, String password) {
+        return loginService.queryByTelephone(telephone, password);
     }
 
     @RequestMapping("/add")
@@ -36,8 +36,8 @@ public class LoginController {
     }
 
     @RequestMapping("/updatebyid")
-    public String updateById(Login login) {
-        return loginService.updateById(login) == 1 ? "success" : "failed";
+    public LoginBase updateById(Login login) {
+        return loginService.updateById(login);
     }
 
     @RequestMapping("/updatebytele")

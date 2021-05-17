@@ -14,8 +14,8 @@ public interface LoginMapper {
     @Select("SELECT * FROM login")
     List<LoginBase> queryAll();
 
-    @Select("SELECT * FROM login WHERE telephone = #{telephone}")
-    LoginBase queryByTelephone(@Param("telephone") String telephone);
+    @Select("SELECT * FROM login WHERE telephone = #{telephone} AND password = #{password}")
+    LoginBase queryByTelephone(@Param("telephone") String telephone, @Param("password") String password);
 
     @Insert({"INSERT INTO login(id,telephone,username,password) " +
             "SELECT replace(uuid(), '-', ''),#{telephone},#{username},#{password} " +
